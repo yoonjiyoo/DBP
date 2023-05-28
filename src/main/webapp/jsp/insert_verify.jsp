@@ -2,7 +2,7 @@
 <%@ page import="java.sql.*"%>
 <html>
 <head>
-<title>¼ö°­½ÅÃ» ÀÔ·Â</title>
+<title>ìˆ˜ê°•ì‹ ì²­ ìž…ë ¥</title>
 </head>
 <body>
 	<%
@@ -14,8 +14,8 @@
 	Connection myConn = null;
 	String result = null;
 	String dburl = "jdbc:oracle:thin:@localhost:1521:xe";
-	String user = "c##jiyoo";
-	String passwd = "pwd2023";
+	String user = "c##yujin";
+	String passwd = "DBP2023";
 	String dbdriver = "oracle.jdbc.driver.OracleDriver";
 	try {
 		Class.forName(dbdriver);
@@ -34,8 +34,7 @@
 		result = cstmt.getString(4);
 	%>
 	<script>
-alert("<%=result%>
-		");
+alert("<%=result%>");
 		location.href = "insert.jsp";
 	</script>
 	<%
