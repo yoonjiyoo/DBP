@@ -20,10 +20,11 @@ stmt = myConn.createStatement();
 } catch(SQLException ex) {
 System.err.println("SQLException: " + ex.getMessage());
 }
-mySQL = "select s_addr, s_pwd from student where s_id='" + session_id + "'";
+mySQL = "select s_id, s_addr, s_pwd from student where s_id='" + session_id + "'";
 myResultSet = stmt.executeQuery(mySQL);
 if (myResultSet != null) {
 while (myResultSet.next()) {
+String s_id = myResultSet.getString("s_id");
 String s_addr = myResultSet.getString("s_addr");
 String s_pwd = myResultSet.getString("s_pwd");
 %>
@@ -31,14 +32,19 @@ String s_pwd = myResultSet.getString("s_pwd");
 		<input type="hidden" name="s_id" size="30" value="<%=session_id%>">
 		<table width="75%" align="center" border>
 			<tr>
-				<th>주 소</th>
-				<td><input type="text" name="s_addr" size="50"
-					value="<%=s_addr%>"></td>
+				<th>학번</th>
+				<td><input type="text" name="s_id" size="10"
+					value="<%=s_id%>"  style="background-color:#ebebeb" readonly></td>
 			</tr>
 			<tr>
 				<th>패스워드</th>
 				<td><input type="password" name="s_pwd" size="20"
 					value="<%=s_pwd%>"></td>
+			</tr>
+			<tr>
+				<th>주 소</th>
+				<td><input type="text" name="s_addr" size="50"
+					value="<%=s_addr%>"></td>
 			</tr>
 			<%
 } }
