@@ -2,18 +2,16 @@
 <%@ page import="java.sql.*"%>
 <html>
 <head>
-<title>¼ö°­½ÅÃ» »ç¿ëÀÚ Á¤º¸ ¼öÁ¤</title>
+<title>ìˆ˜ê°•ì‹ ì²­ ì‚¬ìš©ì ì •ë³´ ìˆ˜ì •</title>
 </head>
 <body>
 	<%
 String s_id =request.getParameter("s_id");
-String s_addr=new
-String(request.getParameter("s_addr").getBytes("Cp1252"),"euckr");
+String s_addr = new String(request.getParameter("s_addr").getBytes("Cp1252"),"euckr");
 String s_pwd=new String(request.getParameter("s_pwd"));
-Connection myConn = null; Statement stmt = null; String mySQL =
-null;
+Connection myConn = null; Statement stmt = null; String mySQL = null;
 String dburl = "jdbc:oracle:thin:@localhost:1521:xe";
-String user=""; String passwd=""; // ºñ¹Ğ¹øÈ£
+String user="c##yujin"; String passwd="DBP2023"; // ë¹„ë°€ë²ˆí˜¸
 String dbdriver = "oracle.jdbc.driver.OracleDriver";
 try {
 Class.forName(dbdriver);
@@ -23,23 +21,23 @@ stmt=myConn.createStatement();
 System.err.println("SQLException: " + ex.getMessage());
 }
 try {
-mySQL ="update student set s_pwd='"+s_pwd+"' where s_id='"+s_id+"'";
+mySQL ="update student set s_pwd='"+s_pwd+"', s_addr='"+s_addr+"' where s_id='"+s_id+"'";
+
 stmt.execute(mySQL);
 %>
 	<script>
-alert("ÇĞ»ıÁ¤º¸°¡ ¼öÁ¤ µÇ¾ú½À´Ï´Ù. ");
+alert("í•™ìƒì •ë³´ê°€ ìˆ˜ì • ë˜ì—ˆìŠµë‹ˆë‹¤. ");
 location.href="update.jsp";
 </script>
 	<%
 } catch(SQLException ex) {
 String sMessage;
-if (ex.getErrorCode() == 20002) sMessage="¾ÏÈ£´Â 4ÀÚ¸® ÀÌ»óÀÌ¾î¾ß ÇÕ´Ï´Ù";
-else if (ex.getErrorCode() == 20003) sMessage="¾ÏÈ£¿¡ °ø¶õÀº ÀÔ·ÂµÇÁö ¾Ê½À´Ï´Ù.";
-else sMessage="Àá½Ã ÈÄ ´Ù½Ã ½ÃµµÇÏ½Ê½Ã¿À";
+if (ex.getErrorCode() == 20002) sMessage="ì•”í˜¸ëŠ” 4ìë¦¬ ì´ìƒì´ì–´ì•¼ í•©ë‹ˆë‹¤";
+else if (ex.getErrorCode() == 20003) sMessage="ì•”í˜¸ì— ê³µë€ì€ ì…ë ¥ë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.";
+else sMessage="ì ì‹œ í›„ ë‹¤ì‹œ ì‹œë„í•˜ì‹­ì‹œì˜¤";
 %>
 	<script>
-alert("<%=sMessage%>
-		");
+alert("<%=sMessage%>");
 		location.href = "update.jsp";
 	</script>
 	<%
