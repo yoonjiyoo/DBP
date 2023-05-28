@@ -2,7 +2,7 @@
 <%@ page import="java.sql.*"%>
 <html>
 <head>
-<title>¼ö°­½ÅÃ» »ç¿ëÀÚ Á¤º¸ ¼öÁ¤</title>
+<title>ìˆ˜ê°•ì‹ ì²­ ì‚¬ìš©ì ì •ë³´ ìˆ˜ì •</title>
 </head>
 <body>
 	<%@ include file="top.jsp"%>
@@ -11,7 +11,7 @@
 Connection myConn = null; Statement stmt = null;
 ResultSet myResultSet = null; String mySQL = "";
 String dburl = "jdbc:oracle:thin:@localhost:1521:xe";
-String user=""; String passwd="";
+String user="c##yujin"; String passwd="DBP2023";
 String dbdriver = "oracle.jdbc.driver.OracleDriver";
 try {
 Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -31,12 +31,12 @@ String s_pwd = myResultSet.getString("s_pwd");
 		<input type="hidden" name="s_id" size="30" value="<%=session_id%>">
 		<table width="75%" align="center" border>
 			<tr>
-				<th>ÁÖ ¼Ò</th>
+				<th>ì£¼ ì†Œ</th>
 				<td><input type="text" name="s_addr" size="50"
 					value="<%=s_addr%>"></td>
 			</tr>
 			<tr>
-				<th>ÆĞ½º¿öµå</th>
+				<th>íŒ¨ìŠ¤ì›Œë“œ</th>
 				<td><input type="password" name="s_pwd" size="20"
 					value="<%=s_pwd%>"></td>
 			</tr>
@@ -45,7 +45,7 @@ String s_pwd = myResultSet.getString("s_pwd");
 stmt.close(); myConn.close();
 %>
 			<tr>
-				<td colspan="2" align="center"><input type="submit" value="¼öÁ¤"></td>
+				<td colspan="2" align="center"><input type="submit" value="ìˆ˜ì •"></td>
 			</tr>
 			</form>
 </body>
