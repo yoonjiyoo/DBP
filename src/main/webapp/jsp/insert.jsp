@@ -1,8 +1,9 @@
 <%@ page contentType="text/html; charset=EUC-KR"%>
 <%@ page import="java.sql.*"%>
+<%@ page import="java.util.ArrayList" %>
 <html>
 <head>
-<title>ìˆ˜ê°•ì‹ ì²­ ì…ë ¥</title>
+<title>¼ö°­½ÅÃ» ÀÔ·Â</title>
 </head>
 <body>
    <%@ include file="top.jsp"%>
@@ -13,15 +14,15 @@
    <table width="75%" align="center" border>
       <br>
       <tr>
-         <th>ê³¼ëª©ë²ˆí˜¸</th>
-         <th>ë¶„ë°˜</th>
-         <th>ê³¼ëª©ëª…</th>
-         <th>í•™ì </th>
-         <th>ìµœëŒ€ìˆ˜ê°•ì¸ì›</th>
-         <th>ìˆ˜ê°•ì‹ ì²­ì¸ì›</th>
-         <th>í•™ê³¼</th>
-         <th>ìˆ˜ê°•ëŒ€ê¸°ì¸ì›</th>
-         <th>ì‹ ì²­</th>
+         <th>°ú¸ñ¹øÈ£</th>
+         <th>ºĞ¹İ</th>
+         <th>°ú¸ñ¸í</th>
+         <th>ÇĞÁ¡</th>
+         <th>ÃÖ´ë¼ö°­ÀÎ¿ø</th>
+         <th>¼ö°­½ÅÃ»ÀÎ¿ø</th>
+         <th>ÇĞ°ú</th>
+         <th>¼ö°­´ë±âÀÎ¿ø</th>
+         <th>½ÅÃ»</th>
       </tr>
       <%
       Connection myConn = null;
@@ -40,8 +41,18 @@
          System.err.println("SQLException: " + ex.getMessage());
       }
 
-      mySQL = "select c_id,c_name,c_id_no,c_unit,c_max,c_app,c_major,c_wait from course where c_id not in (select c_id from enroll where s_id='"
-            + session_id + "')";
+      // ÀÌÀü¿¡ ½ÅÃ»ÇÑ °ú¸ñµéÀ» ÀúÀåÇÏ´Â ArrayList »ı¼º
+      ArrayList<String> enrolledCourses = new ArrayList<String>();
+
+      // ½ÅÃ»ÇÑ °ú¸ñµéÀ» Á¶È¸ÇÏ¿© enrolledCourses¿¡ ÀúÀå
+      String selectEnrolledCoursesSQL = "select c_id from enroll where s_id='" + session_id + "'";
+      ResultSet enrolledCoursesResultSet = stmt.executeQuery(selectEnrolledCoursesSQL);
+      while (enrolledCoursesResultSet.next()) {
+         String enrolledCourseId = enrolledCoursesResultSet.getString("c_id");
+         enrolledCourses.add(enrolledCourseId);
+      }
+
+      mySQL = "select c_id,c_name,c_id_no,c_unit,c_max,c_app,c_major,c_wait from course";
       myResultSet = stmt.executeQuery(mySQL);
       if (myResultSet != null) {
          while (myResultSet.next()) {
@@ -64,8 +75,13 @@
          <td align="center"><%=c_app%></td>
          <td align="center"><%=c_major%></td>
          <td align="center"><%=c_wait%></td>
-         <td align="center"><a
-            href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">ì‹ ì²­</a></td>
+         <td align="center">
+            <% if (enrolledCourses.contains(c_id)) { %>
+               ½ÅÃ»¿Ï·á
+            <% } else { %>
+               <a href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">½ÅÃ»</a>
+            <% } %>
+         </td>
       </tr>
       <%
       }
