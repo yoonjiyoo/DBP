@@ -23,7 +23,7 @@
     try {
         Class.forName(dbdriver);
         myConn = DriverManager.getConnection(dburl, user, passwd);
-        stmt = myConn.prepareCall("{ call cancel_wait(?, ?, ?) }"); // This procedure should delete a row from the wait table and decrease c_wait by 1
+        stmt = myConn.prepareCall("{ call cancel_wait(?, ?, ?) }"); 
         stmt.setString(1, session_id);
         stmt.setString(2, c_id);
         stmt.setInt(3, c_id_no);
@@ -47,7 +47,7 @@
         <%
         stmt.close();
         myConn.close();
-        response.sendRedirect("insert.jsp"); 
+        response.sendRedirect("insert.jsp");
     } catch (SQLException ex) {
         System.err.println("SQLException: " + ex.getMessage());
     }
