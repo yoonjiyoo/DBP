@@ -16,5 +16,6 @@ else
 		<td align="center"><b><a href="insert.jsp">수강신청 입력</b></td>
 		<td align="center"><b><a href="delete.jsp">수강신청 삭제</b></td>
 		<td align="center"><b><a href="select.jsp">수강신청 조회</b></td>
+		<td align="center"><b><a href="star.jsp">즐겨찾기 조회</b></td>
 	</tr>
 </table>

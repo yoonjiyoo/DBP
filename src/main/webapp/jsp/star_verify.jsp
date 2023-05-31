@@ -2,7 +2,7 @@
 <%@ page import="java.sql.*"%>
 <html>
 <head>
-<title>수강신청 입력</title>
+<title>즐겨찾기 입력</title>
 </head>
 <body>
 	<%
@@ -24,7 +24,7 @@
 		System.err.println("SQLException: " + ex.getMessage());
 	}
 
-	CallableStatement cstmt = myConn.prepareCall("{call InsertEnroll(?,?,?,?)}");
+	CallableStatement cstmt = myConn.prepareCall("{call InsertStar(?,?,?,?)}");
 	cstmt.setString(1, s_id);
 	cstmt.setString(2, c_id);
 	cstmt.setInt(3, c_id_no);
@@ -50,6 +50,5 @@ alert("<%=result%>");
 		}
 	}
 	%>
-	</form>
 </body>
 </html>
