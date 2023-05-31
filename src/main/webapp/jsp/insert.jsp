@@ -1,6 +1,47 @@
-<%@ page contentType="text/html; charset=EUC-KR"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page contentType="text/html; charset=EUC-KR"%>
+
+<%--과목코드와 분반을 분리해서 신청여부를 확인할 수 있도록 하기 위해 추가한 부분입니다.--%>
+<%!
+public class EnrolledCourse {
+	private String c_id;
+	private int c_id_no;
+	
+	public EnrolledCourse(String c_id, int c_id_no) {
+		this.c_id = c_id;
+		this.c_id_no = c_id_no;
+	}
+	
+	public String getC_id() {
+		return c_id;
+	}
+	
+	public int getC_id_no() {
+		return c_id_no;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		EnrolledCourse that = (EnrolledCourse) obj;
+		
+		if (c_id_no != that.c_id_no) return false;
+		return c_id != null ? c_id.equals(that.c_id) : that.c_id == null;
+	}
+	
+	@Override
+	public int hashCode() {
+		int result = c_id != null ? c_id.hashCode() : 0;
+		result = 31 * result + c_id_no;
+		return result;
+	}
+}
+%>
+<%--과목코드와 분반을 분리해서 신청여부를 확인할 수 있도록 하기 위해 추가한 부분입니다.--%>
+
 <html>
 <head>
 <title>수강신청 입력</title>
@@ -49,12 +90,13 @@
 			System.err.println("SQLException: " + ex.getMessage());
 		}
 
-		ArrayList<String> enrolledCourses = new ArrayList<String>();
-		String selectEnrolledCoursesSQL = "select c_id from enroll where s_id='" + session_id + "'";
+		ArrayList<EnrolledCourse> enrolledCourses = new ArrayList<>();
+		String selectEnrolledCoursesSQL = "select c_id, c_id_no from enroll where s_id='" + session_id + "'";
 		ResultSet enrolledCoursesResultSet = stmt.executeQuery(selectEnrolledCoursesSQL);
 		while (enrolledCoursesResultSet.next()) {
 			String enrolledCourseId = enrolledCoursesResultSet.getString("c_id");
-			enrolledCourses.add(enrolledCourseId);
+			int enrolledCourseNo = enrolledCoursesResultSet.getInt("c_id_no");
+			enrolledCourses.add(new EnrolledCourse(enrolledCourseId, enrolledCourseNo));
 		}
 		enrolledCoursesResultSet.close();
 
@@ -108,7 +150,7 @@
 				String c_major = myResultSet.getString("c_major");
 				int c_wait = myResultSet.getInt("c_wait");
 
-				boolean isEnrolled = enrolledCourses.contains(c_id);
+				boolean isEnrolled = enrolledCourses.contains(new EnrolledCourse(c_id, c_id_no)); //과목코드+분반
 				boolean isStarred = starCourses.contains(c_id);
 				boolean isWaitlisted = waitCourses.contains(c_id);
 				boolean isFull = c_max == c_app;
