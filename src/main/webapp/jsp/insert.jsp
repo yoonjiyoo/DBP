@@ -4,6 +4,14 @@
 <html>
 <head>
 <title>수강신청 입력</title>
+<script type="text/javascript">
+	function changeMajor() {
+		var selectedMajor = document.getElementById("majorSelect").value;
+		window.location.href = 'insert.jsp?selectedMajor='
+				+ encodeURIComponent(selectedMajor);
+	}
+</script>
+
 </head>
 <body>
 	<%@ include file="top.jsp"%>
@@ -42,31 +50,45 @@
 			System.err.println("SQLException: " + ex.getMessage());
 		}
 
-		// 이전에 신청한 과목들을 저장하는 ArrayList 생성
 		ArrayList<String> enrolledCourses = new ArrayList<String>();
-
-		// 신청한 과목들을 조회하여 enrolledCourses에 저장
 		String selectEnrolledCoursesSQL = "select c_id from enroll where s_id='" + session_id + "'";
 		ResultSet enrolledCoursesResultSet = stmt.executeQuery(selectEnrolledCoursesSQL);
 		while (enrolledCoursesResultSet.next()) {
 			String enrolledCourseId = enrolledCoursesResultSet.getString("c_id");
 			enrolledCourses.add(enrolledCourseId);
 		}
+		enrolledCoursesResultSet.close();
 
-		// 이전에 즐찾한 과목들을 저장하는 ArrayList 생성
 		ArrayList<String> starCourses = new ArrayList<String>();
-
-		// 즐겨찾기 과목들 조회하여 starCourses에 저장
-		String selectstarCoursesSQL = "select c_id from star where s_id='" + session_id + "'";
-		ResultSet starCoursesResultSet = stmt.executeQuery(selectstarCoursesSQL);
+		String selectStarCoursesSQL = "select c_id from star where s_id='" + session_id + "'";
+		ResultSet starCoursesResultSet = stmt.executeQuery(selectStarCoursesSQL);
 		while (starCoursesResultSet.next()) {
 			String starCoursesId = starCoursesResultSet.getString("c_id");
 			starCourses.add(starCoursesId);
 		}
+		starCoursesResultSet.close();
 
-		mySQL = "select c_id,c_name,c_id_no,c_unit,c_max,c_app,c_major,c_wait from course";
-		myResultSet = stmt.executeQuery(mySQL);
-		if (myResultSet != null) {
+		String selectedMajor = request.getParameter("selectedMajor");
+
+		String majorSQL = "select distinct c_major from course";
+		ResultSet majorResultSet = stmt.executeQuery(majorSQL);
+		%>
+		<select id="majorSelect" onchange="changeMajor()">
+			<option value="">All</option>
+			<%
+			while (majorResultSet.next()) {
+				String major = majorResultSet.getString("c_major");
+			%>
+			<option value="<%=major%>"
+				<%=selectedMajor != null && selectedMajor.equals(major) ? "selected" : ""%>><%=major%></option>
+			<%
+			}
+			majorResultSet.close();
+
+			mySQL = "select c_id,c_name,c_id_no,c_unit,c_max,c_app,c_major,c_wait from course"
+					+ (selectedMajor == null || selectedMajor.equals("") ? "" : " where c_major = '" + selectedMajor + "'");
+			myResultSet = stmt.executeQuery(mySQL);
+			if (myResultSet != null) {
 			while (myResultSet.next()) {
 				String c_id = myResultSet.getString("c_id");
 				int c_id_no = myResultSet.getInt("c_id_no");
@@ -76,44 +98,45 @@
 				int c_app = myResultSet.getInt("c_app");
 				String c_major = myResultSet.getString("c_major");
 				int c_wait = myResultSet.getInt("c_wait");
-		%>
-
-		<tr>
-			<td align="center"><%=c_id%></td>
-			<td align="center"><%=c_id_no%></td>
-			<td align="center"><%=c_name%></td>
-			<td align="center"><%=c_unit%></td>
-			<td align="center"><%=c_max%></td>
-			<td align="center"><%=c_app%></td>
-			<td align="center"><%=c_major%></td>
-			<td align="center"><%=c_wait%></td>
-			<td align="center">
-				<%
-				if (enrolledCourses.contains(c_id)) {
-				%> 신청완료 <%
-				} else {
-				%> <a href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">신청</a>
-				<%
-				}
-				%>
-			</td>
-			<td align="center">
-				<%
-				if (starCourses.contains(c_id)) {
-				%> 즐겨찾기 <%
-				} else {
-				%> <a href="star_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">즐겨찾기</a>
-				<%
-				}
-				%>
-			</td>
-		</tr>
-		<%
-		}
-		}
-		stmt.close();
-		myConn.close();
-		%>
+			%>
+			<tr>
+				<td align="center"><%=c_id%></td>
+				<td align="center"><%=c_id_no%></td>
+				<td align="center"><%=c_name%></td>
+				<td align="center"><%=c_unit%></td>
+				<td align="center"><%=c_max%></td>
+				<td align="center"><%=c_app%></td>
+				<td align="center"><%=c_major%></td>
+				<td align="center"><%=c_wait%></td>
+				<td align="center">
+					<%
+					if (enrolledCourses.contains(c_id)) {
+					%> 신청완료 <%
+					} else {
+					%> <a href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">신청</a>
+					<%
+					}
+					%>
+				</td>
+				<td align="center">
+					<%
+					if (starCourses.contains(c_id)) {
+					%> 즐겨찾기 <%
+					} else {
+					%> <a href="star_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">즐겨찾기</a>
+					<%
+					}
+					%>
+				</td>
+			</tr>
+			<%
+			}
+			myResultSet.close();
+			}
+			stmt.close();
+			myConn.close();
+			%>
+		
 	</table>
 </body>
 </html>
