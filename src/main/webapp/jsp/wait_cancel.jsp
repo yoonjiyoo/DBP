@@ -29,7 +29,7 @@
         stmt.setInt(3, c_id_no);
         stmt.execute();
 
-        // Decrease c_wait by 1 in the HTML table
+        
         String selectCourseWaitSQL = "SELECT c_wait FROM course WHERE c_id='" + c_id + "' AND c_id_no=" + c_id_no;
         ResultSet courseWaitResultSet = stmt.executeQuery(selectCourseWaitSQL);
         int c_wait = 0;
@@ -47,7 +47,7 @@
         <%
         stmt.close();
         myConn.close();
-        response.sendRedirect("insert.jsp"); // Redirect back to the course page
+        response.sendRedirect("insert.jsp"); 
     } catch (SQLException ex) {
         System.err.println("SQLException: " + ex.getMessage());
     }

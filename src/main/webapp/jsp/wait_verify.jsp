@@ -30,7 +30,7 @@
         stmt.execute();
         stmt.close();
         myConn.close();
-        response.sendRedirect("insert.jsp"); // Redirect back to the course page
+        response.sendRedirect("insert.jsp"); 
     } catch (SQLException ex) {
         System.err.println("SQLException: " + ex.getMessage());
     }

@@ -128,7 +128,7 @@
 					%> 신청완료 <%
 					} else if (isWaitlisted) {
 					%> <a
-					href="wait_cancel.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">대기취소</a>
+					href="wait_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">대기취소</a>
 					<%
 					} else if (isFull) {
 					%> <a href="wait_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">대기하기</a>
