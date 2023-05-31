@@ -2,7 +2,7 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page contentType="text/html; charset=EUC-KR"%>
 
-<%--과목코드와 분반을 분리해서 신청여부를 확인할 수 있도록 하기 위해 추가한 부분입니다.--%>
+<%--과목코드와 분반을 분리해서 신청여부를 확인할 수 있도록 하기 위해 추가한 부분입니다.!~~--%>
 <%!
 public class EnrolledCourse {
 	private String c_id;
@@ -40,7 +40,7 @@ public class EnrolledCourse {
 	}
 }
 %>
-<%--과목코드와 분반을 분리해서 신청여부를 확인할 수 있도록 하기 위해 추가한 부분입니다.--%>
+<%--~~!과목코드와 분반을 분리해서 신청여부를 확인할 수 있도록 하기 위해 추가한 부분입니다--%>
 
 <html>
 <head>
