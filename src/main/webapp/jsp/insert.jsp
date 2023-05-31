@@ -11,7 +11,6 @@
 				+ encodeURIComponent(selectedMajor);
 	}
 </script>
-
 </head>
 <body>
 	<%@ include file="top.jsp"%>
@@ -68,6 +67,16 @@
 		}
 		starCoursesResultSet.close();
 
+		// Fetch waitlist courses
+		ArrayList<String> waitCourses = new ArrayList<String>();
+		String selectWaitCoursesSQL = "select c_id from wait where s_id='" + session_id + "'";
+		ResultSet waitCoursesResultSet = stmt.executeQuery(selectWaitCoursesSQL);
+		while (waitCoursesResultSet.next()) {
+			String waitCoursesId = waitCoursesResultSet.getString("c_id");
+			waitCourses.add(waitCoursesId);
+		}
+		waitCoursesResultSet.close();
+
 		String selectedMajor = request.getParameter("selectedMajor");
 
 		String majorSQL = "select distinct c_major from course";
@@ -98,6 +107,11 @@
 				int c_app = myResultSet.getInt("c_app");
 				String c_major = myResultSet.getString("c_major");
 				int c_wait = myResultSet.getInt("c_wait");
+
+				boolean isEnrolled = enrolledCourses.contains(c_id);
+				boolean isStarred = starCourses.contains(c_id);
+				boolean isWaitlisted = waitCourses.contains(c_id);
+				boolean isFull = c_max == c_app;
 			%>
 			<tr>
 				<td align="center"><%=c_id%></td>
@@ -110,17 +124,25 @@
 				<td align="center"><%=c_wait%></td>
 				<td align="center">
 					<%
-					if (enrolledCourses.contains(c_id)) {
+					if (isEnrolled) {
 					%> 신청완료 <%
+					} else if (isWaitlisted) {
+					%> <a
+					href="wait_cancel.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">대기취소</a>
+					<%
+					} else if (isFull) {
+					%> <a href="wait_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">대기하기</a>
+					<%
 					} else {
-					%> <a href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">신청</a>
+					%> <a
+					href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">신청</a>
 					<%
 					}
 					%>
 				</td>
 				<td align="center">
 					<%
-					if (starCourses.contains(c_id)) {
+					if (isStarred) {
 					%> 즐겨찾기 <%
 					} else {
 					%> <a href="star_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">즐겨찾기</a>
