@@ -3,7 +3,7 @@
 <%@ page import="java.util.*" %>
 <html>
 <head>
-<title>¼ö°­½ÅÃ» ÀÔ·Â</title>
+<title>ìˆ˜ê°•ì‹ ì²­ ì…ë ¥</title>
 </head>
 <body>
    <%@ include file="top.jsp"%>
@@ -14,15 +14,15 @@
    <table width="75%" align="center" border>
       <br>
       <tr>
-         <th>°ú¸ñ¹øÈ£</th>
-         <th>ºĞ¹İ</th>
-         <th>°ú¸ñ¸í</th>
-         <th>ÇĞÁ¡</th>
-         <th>ÃÖ´ë¼ö°­ÀÎ¿ø</th>
-         <th>¼ö°­½ÅÃ»ÀÎ¿ø</th>
-         <th>ÇĞ°ú</th>
-         <th>¼ö°­´ë±âÀÎ¿ø</th>
-         <th>½ÅÃ»</th>
+         <th>ê³¼ëª©ë²ˆí˜¸</th>
+         <th>ë¶„ë°˜</th>
+         <th>ê³¼ëª©ëª…</th>
+         <th>í•™ì </th>
+         <th>ìµœëŒ€ìˆ˜ê°•ì¸ì›</th>
+         <th>ìˆ˜ê°•ì‹ ì²­ì¸ì›</th>
+         <th>í•™ê³¼</th>
+         <th>ìˆ˜ê°•ëŒ€ê¸°ì¸ì›</th>
+         <th>ì‹ ì²­</th>
       </tr>
       <%
       Connection myConn = null;
@@ -44,8 +44,8 @@
       ArrayList<String> enrolledCourseIds = new ArrayList<String>();
       ArrayList<Integer> enrolledCourseIdNumbers = new ArrayList<Integer>();
       
-      // ½ÅÃ»ÇÑ °ú¸ñµéÀ» Á¶È¸ÇÏ¿© enrolledCourses¿¡ ÀúÀå
-      String selectEnrolledCoursesSQL = "select c.c_id, c.c_id_no, c.c_name, c.c_unit, c.c_max, c.c_app, c.c_major, c.c_wait from Course c, Enroll e where e.s_id='" + session_id + "' and e.c_id=c.c_id and e.c_id_no = c.c_id_no";
+      // ì‹ ì²­í•œ ê³¼ëª©ë“¤ì„ ì¡°íšŒí•˜ì—¬ enrolledCoursesì— ì €ì¥
+      String selectEnrolledCoursesSQL = "select c.c_id, c.c_id_no, c.c_name, c.c_unit, c.c_max, c.c_app, c.c_major, c.c_wait from Course c, Enroll e where e.s_id='" + session_id + "' and e.c_id=c.c_id and e.c_id_no = c.c_id_no and c.c_year=2023 and c.c_sem=2";
       myResultSet = stmt.executeQuery(selectEnrolledCoursesSQL);
       
       while (myResultSet.next()) {
@@ -66,7 +66,7 @@
        	<td align="center"><%=c_app%></td>
        	<td align="center"><%=c_major%></td>
        	<td align="center"><%=c_wait%></td>
-       	<td align="center"><a href="delete_done.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">»èÁ¦</a></td>
+       	<td align="center"><a href="delete_done.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">ì‚­ì œ</a></td>
       </tr>
       <%}%>
       
