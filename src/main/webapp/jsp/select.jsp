@@ -8,6 +8,12 @@
 <body>
    <%@ include file="top.jsp"%>
    <%
+   int c_year=2023;
+   int c_sem=2;
+   if (request.getMethod().equalsIgnoreCase("post")) {
+	   c_year = Integer.parseInt(request.getParameter("year"));
+	   c_sem = Integer.parseInt(request.getParameter("semester"));
+   }
    if (session_id == null)
       response.sendRedirect("login.jsp");
    %>
@@ -30,6 +36,7 @@
       Statement stmt2 = null;
       ResultSet myResultSet = null;
       String mySQL = "";
+      
       String dburl = "jdbc:oracle:thin:@localhost:1521:xe";
       String user = "c##yujin";
       String passwd = "DBP2023";
@@ -46,7 +53,8 @@
       ArrayList<Integer> enrolledCourseIdNumbers = new ArrayList<Integer>();
       
       // 신청한 과목들을 조회하여 enrolledCourses에 저장
-      String selectEnrolledCoursesSQL = "select c.c_id, c.c_id_no, c.c_name, c.c_unit, c.c_max, c.c_app, c.c_major, c.c_wait from Course c, Enroll e where e.s_id='" + session_id + "' and e.c_id=c.c_id and e.c_id_no = c.c_id_no";
+      String selectEnrolledCoursesSQL = "select c.c_id, c.c_id_no, c.c_name, c.c_unit, c.c_max, c.c_app, c.c_major, c.c_wait from Course c, Enroll e where e.s_id='" + session_id + "' and e.c_id=c.c_id and e.c_id_no = c.c_id_no and c.c_year='"+c_year+"' and c.c_sem="+c_sem;
+      
       myResultSet = stmt.executeQuery(selectEnrolledCoursesSQL);
       
       while (myResultSet.next()) {
@@ -70,15 +78,18 @@
       </tr>
       <%}
       
-      CallableStatement cstmt = myConn.prepareCall("{call SelectEnroll (?,?,?)}");
+      CallableStatement cstmt = myConn.prepareCall("{call SelectEnroll (?,?,?,?,?)}");
       cstmt.setString(1, session_id);
-  	  cstmt.registerOutParameter(2, java.sql.Types.INTEGER);
-  	  cstmt.registerOutParameter(3, java.sql.Types.INTEGER);
+      cstmt.setInt(2, c_year);
+      cstmt.setInt(3, c_sem);
+  	  cstmt.registerOutParameter(4, java.sql.Types.INTEGER);
+  	  cstmt.registerOutParameter(5, java.sql.Types.INTEGER);
   	  try {
   		  cstmt.execute();
-  		  int s_unit = cstmt.getInt(2);
-  		  int s_count = cstmt.getInt(3);
+  		  int s_unit = cstmt.getInt(4);
+  		  int s_count = cstmt.getInt(5);
   		%>
+
   		<tr>
       		<th colspan="5">총 신청학점</th>
       		<td align="center" colspan="2"><%=s_unit%></td>
@@ -100,7 +111,17 @@
   		} catch (SQLException ex) {
   		}
   	}%>
-
    </table>
+   <br><br>
+   <form action="" method="post" align="center">
+   	
+   	<input type="text" id="year" name="year" value=<%=c_year %> required>
+   	<label for="year">년도</label>
+   	
+   	<input type="text" id="semester" name="semester" value=<%=c_sem %> required>
+   	<label for="semester">학기</label>
+   	
+   	<input type="submit" value="조회">
+   </form>
 </body>
 </html>
