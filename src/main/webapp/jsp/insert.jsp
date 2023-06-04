@@ -2,7 +2,7 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page contentType="text/html; charset=EUC-KR"%>
 
-<%--°ú¸ñÄÚµå¿Í ºĞ¹İÀ» ºĞ¸®ÇØ¼­ ½ÅÃ»¿©ºÎ¸¦ È®ÀÎÇÒ ¼ö ÀÖµµ·Ï ÇÏ±â À§ÇØ Ãß°¡ÇÑ ºÎºĞÀÔ´Ï´Ù!~~--%>
+<%--ê³¼ëª©ì½”ë“œì™€ ë¶„ë°˜ì„ ë¶„ë¦¬í•´ì„œ ì‹ ì²­ì—¬ë¶€ë¥¼ í™•ì¸í•  ìˆ˜ ìˆë„ë¡ í•˜ê¸° ìœ„í•´ ì¶”ê°€í•œ ë¶€ë¶„ì…ë‹ˆë‹¤--%>
 <%!
 public class EnrolledCourse {
 	private String c_id;
@@ -23,14 +23,15 @@ public class EnrolledCourse {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
-		
-		EnrolledCourse that = (EnrolledCourse) obj;
-		
-		if (c_id_no != that.c_id_no) return false;
-		return c_id != null ? c_id.equals(that.c_id) : that.c_id == null;
+	    if (this == obj) return true;
+	    if (obj == null || getClass() != obj.getClass()) return false;
+
+	    EnrolledCourse that = (EnrolledCourse) obj;
+
+	    if (c_id_no != that.c_id_no) return false;
+	    return c_id != null ? c_id.equals(that.c_id) && c_id_no == that.c_id_no : that.c_id == null;
 	}
+
 	
 	@Override
 	public int hashCode() {
@@ -40,11 +41,11 @@ public class EnrolledCourse {
 	}
 }
 %>
-<%--~~!°ú¸ñÄÚµå¿Í ºĞ¹İÀ» ºĞ¸®ÇØ¼­ ½ÅÃ»¿©ºÎ¸¦ È®ÀÎÇÒ ¼ö ÀÖµµ·Ï ÇÏ±â À§ÇØ Ãß°¡ÇÑ ºÎºĞÀÔ´Ï´Ù--%>
+<%--ê³¼ëª©ì½”ë“œì™€ ë¶„ë°˜ì„ ë¶„ë¦¬í•´ì„œ ì‹ ì²­ì—¬ë¶€ë¥¼ í™•ì¸í•  ìˆ˜ ìˆë„ë¡ í•˜ê¸° ìœ„í•´ ì¶”ê°€í•œ ë¶€ë¶„ì…ë‹ˆë‹¤--%>
 
 <html>
 <head>
-<title>¼ö°­½ÅÃ» ÀÔ·Â</title>
+<title>ìˆ˜ê°•ì‹ ì²­ ì…ë ¥</title>
 <script type="text/javascript">
 	function changeMajor() {
 		var selectedMajor = document.getElementById("majorSelect").value;
@@ -64,16 +65,18 @@ public class EnrolledCourse {
 	<table width="80%" align="center" border>
 		<br>
 		<tr>
-			<th>°ú¸ñ¹øÈ£</th>
-			<th>ºĞ¹İ</th>
-			<th>°ú¸ñ¸í</th>
-			<th>ÇĞÁ¡</th>
-			<th>ÃÖ´ë¼ö°­ÀÎ¿ø</th>
-			<th>¼ö°­½ÅÃ»ÀÎ¿ø</th>
-			<th>ÇĞ°ú</th>
-			<th>¼ö°­´ë±âÀÎ¿ø</th>
-			<th>½ÅÃ»</th>
-			<th>Áñ°ÜÃ£±â</th>
+			<th>ê³¼ëª©ë²ˆí˜¸</th>
+			<th>ë¶„ë°˜</th>
+			<th>ê³¼ëª©ëª…</th>
+			<th>í•™ì </th>
+			<th>ìµœëŒ€ì¸ì›</th>
+			<th>ì‹ ì²­ì¸ì›</th>
+			<th>í•™ê³¼</th>
+			<th>ëŒ€ê¸°ì¸ì›</th>
+			<th>ì‹ ì²­</th>
+			<th>ì¦ê²¨ì°¾ê¸°</th>
+			<th>ì—°ë„</th>
+			<th>í•™ê¸°</th>			
 		</tr>
 		<%
 		Connection myConn = null;
@@ -91,6 +94,9 @@ public class EnrolledCourse {
 		} catch (SQLException ex) {
 			System.err.println("SQLException: " + ex.getMessage());
 		}
+
+
+
 
 		ArrayList<EnrolledCourse> enrolledCourses = new ArrayList<>();
 		String selectEnrolledCoursesSQL = "select c_id, c_id_no from enroll where s_id='" + session_id + "'";
@@ -112,14 +118,16 @@ public class EnrolledCourse {
 		starCoursesResultSet.close();
 
 		
-		ArrayList<String> waitCourses = new ArrayList<String>();
-		String selectWaitCoursesSQL = "select c_id from wait where s_id='" + session_id + "'";
+		ArrayList<EnrolledCourse> waitCourses = new ArrayList<EnrolledCourse>();
+		String selectWaitCoursesSQL = "select c_id, c_id_no from wait where s_id='" + session_id + "'";
 		ResultSet waitCoursesResultSet = stmt.executeQuery(selectWaitCoursesSQL);
 		while (waitCoursesResultSet.next()) {
 			String waitCoursesId = waitCoursesResultSet.getString("c_id");
-			waitCourses.add(waitCoursesId);
+			int waitCoursesNo = waitCoursesResultSet.getInt("c_id_no");
+			waitCourses.add(new EnrolledCourse(waitCoursesId, waitCoursesNo));
 		}
 		waitCoursesResultSet.close();
+		
 
 		String selectedMajor = request.getParameter("selectedMajor");
 
@@ -138,7 +146,7 @@ public class EnrolledCourse {
 			}
 			majorResultSet.close();
 
-			mySQL = "select c_id,c_name,c_id_no,c_unit,c_max,c_app,c_major,c_wait from course"
+			mySQL = "select c_id,c_name,c_id_no,c_unit,c_max,c_app,c_major,c_wait,c_year,c_sem from course"
 					+ (selectedMajor == null || selectedMajor.equals("") ? "" : " where c_major = '" + selectedMajor + "'");
 			myResultSet = stmt.executeQuery(mySQL);
 			if (myResultSet != null) {
@@ -151,10 +159,12 @@ public class EnrolledCourse {
 				int c_app = myResultSet.getInt("c_app");
 				String c_major = myResultSet.getString("c_major");
 				int c_wait = myResultSet.getInt("c_wait");
+				int c_year = myResultSet.getInt("c_year");
+				int c_sem = myResultSet.getInt("c_sem");
 
-				boolean isEnrolled = enrolledCourses.contains(new EnrolledCourse(c_id, c_id_no)); //°ú¸ñÄÚµå+ºĞ¹İ
+				boolean isEnrolled = enrolledCourses.contains(new EnrolledCourse(c_id, c_id_no)); //ê³¼ëª©ì½”ë“œ+ë¶„ë°˜
 				boolean isStarred = starCourses.contains(c_id);
-				boolean isWaitlisted = waitCourses.contains(c_id);
+				boolean isWaitlisted = waitCourses.contains(new EnrolledCourse(c_id, c_id_no));
 				boolean isFull = c_max == c_app;
 			%>
 			<tr>
@@ -169,17 +179,17 @@ public class EnrolledCourse {
 				<td align="center">
 					<%
 					if (isEnrolled) {
-					%> ½ÅÃ»¿Ï·á <%
+					%> ì‹ ì²­ì™„ë£Œ <%
 					} else if (isWaitlisted) {
 						%> <a
-						href="wait_cancel.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">´ë±âÃë¼Ò</a>
+						href="wait_cancel.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">ëŒ€ê¸°ì·¨ì†Œ</a>
 						<%
 						} else if (isFull) {
-						%> <a href="wait_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">´ë±âÇÏ±â</a>
+						%> <a href="wait_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">ëŒ€ê¸°í•˜ê¸°</a>
 						<%
 						} else {
 						%> <a
-						href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">½ÅÃ»</a>
+						href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">ì‹ ì²­</a>
 						<%
 						}
 					%>
@@ -187,13 +197,15 @@ public class EnrolledCourse {
 				<td align="center">
 					<%
 					if (isStarred) {
-					%> Áñ°ÜÃ£±â <%
+					%> ì¦ê²¨ì°¾ê¸° <%
 					} else {
-					%> <a href="star_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">Áñ°ÜÃ£±â</a>
+					%> <a href="star_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">ì¦ê²¨ì°¾ê¸°</a>
 					<%
 					}
 					%>
 				</td>
+				<td align="center"><%=c_year%></td>
+				<td align="center"><%=c_sem%></td>
 			</tr>
 			<%
 			}
