@@ -3,7 +3,7 @@
 <%@ page import="java.util.ArrayList"%>
 <html>
 <head>
-<title>¼ö°­½ÅÃ» ÀÔ·Â</title>
+<title>ìˆ˜ê°•ì‹ ì²­ ì…ë ¥</title>
 </head>
 <body>
     <%@ include file="top.jsp"%>
@@ -14,16 +14,16 @@
     <table width="80%" align="center" border>
         <br>
         <tr>
-            <th>°ú¸ñ¹øÈ£</th>
-            <th>ºĞ¹İ</th>
-            <th>°ú¸ñ¸í</th>
-            <th>ÇĞÁ¡</th>
-            <th>ÃÖ´ë¼ö°­ÀÎ¿ø</th>
-            <th>¼ö°­½ÅÃ»ÀÎ¿ø</th>
-            <th>ÇĞ°ú</th>
-            <th>¼ö°­´ë±âÀÎ¿ø</th>
-            <th>½ÅÃ»</th>
-            <th>»èÁ¦</th>
+            <th>ê³¼ëª©ë²ˆí˜¸</th>
+            <th>ë¶„ë°˜</th>
+            <th>ê³¼ëª©ëª…</th>
+            <th>í•™ì </th>
+            <th>ìµœëŒ€ìˆ˜ê°•ì¸ì›</th>
+            <th>ìˆ˜ê°•ì‹ ì²­ì¸ì›</th>
+            <th>í•™ê³¼</th>
+            <th>ìˆ˜ê°•ëŒ€ê¸°ì¸ì›</th>
+            <th>ì‹ ì²­</th>
+            <th>ì‚­ì œ</th>
         </tr>
         <%
         Connection myConn = null;
@@ -42,10 +42,10 @@
             System.err.println("SQLException: " + ex.getMessage());
         }
 
-        // ÀÌÀü¿¡ ½ÅÃ»ÇÑ °ú¸ñµéÀ» ÀúÀåÇÏ´Â ArrayList »ı¼º
+        // ì´ì „ì— ì‹ ì²­í•œ ê³¼ëª©ë“¤ì„ ì €ì¥í•˜ëŠ” ArrayList ìƒì„±
         ArrayList<String> enrolledCourses = new ArrayList<String>();
 
-        // ½ÅÃ»ÇÑ °ú¸ñµéÀ» Á¶È¸ÇÏ¿© enrolledCourses¿¡ ÀúÀå
+        // ì‹ ì²­í•œ ê³¼ëª©ë“¤ì„ ì¡°íšŒí•˜ì—¬ enrolledCoursesì— ì €ì¥
         String selectEnrolledCoursesSQL = "select c_id from enroll where s_id='" + session_id + "'";
         ResultSet enrolledCoursesResultSet = stmt.executeQuery(selectEnrolledCoursesSQL);
         while (enrolledCoursesResultSet.next()) {
@@ -53,10 +53,10 @@
             enrolledCourses.add(enrolledCourseId);
         }
 
-        // ÀÌÀü¿¡ Áñ°ÜÃ£±âÇÑ °ú¸ñµéÀ» ÀúÀåÇÏ´Â ArrayList »ı¼º
+        // ì´ì „ì— ì¦ê²¨ì°¾ê¸°í•œ ê³¼ëª©ë“¤ì„ ì €ì¥í•˜ëŠ” ArrayList ìƒì„±
         ArrayList<String> starCourses = new ArrayList<String>();
 
-        // Áñ°ÜÃ£±âÇÑ °ú¸ñµéÀ» Á¶È¸ÇÏ¿© starCourses¿¡ ÀúÀå
+        // ì¦ê²¨ì°¾ê¸°í•œ ê³¼ëª©ë“¤ì„ ì¡°íšŒí•˜ì—¬ starCoursesì— ì €ì¥
         String selectStarCoursesSQL = "select c_id from star where s_id='" + session_id + "'";
         ResultSet starCoursesResultSet = stmt.executeQuery(selectStarCoursesSQL);
         while (starCoursesResultSet.next()) {
@@ -64,9 +64,10 @@
             starCourses.add(starCourseId);
         }
 
-        //Áñ°ÜÃ£±âÇÑ °ú¸ñ°ú join--> Áñ°ÜÃ£±âµÈ °ú¸ñ¸¸ Á¶È¸µÊ
+        //ì¦ê²¨ì°¾ê¸°í•œ ê³¼ëª©ê³¼ join--> ì¦ê²¨ì°¾ê¸°ëœ ê³¼ëª©ë§Œ ì¡°íšŒë¨
         mySQL = "select c_id,c_name,c_id_no,c_unit,c_max,c_app,c_major,c_wait from course " +
-                "where c_id in (select c_id from star where s_id='" + session_id + "')";
+             "where c_id in (select c_id from star where s_id='" + session_id + "') " +
+             "and c_id_no in (select c_id_no from star where s_id='" + session_id + "')";
         myResultSet = stmt.executeQuery(mySQL);
         if (myResultSet != null) {
             while (myResultSet.next()) {
@@ -91,13 +92,13 @@
             <td align="center"><%=c_wait%></td>
             <td align="center">
                 <% if (enrolledCourses.contains(c_id)) { %>
-                    ½ÅÃ»¿Ï·á
+                    ì‹ ì²­ì™„ë£Œ
                 <% } else { %>
-                    <a href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">½ÅÃ»</a>
+                    <a href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">ì‹ ì²­</a>
                 <% } %>
             </td>
             <td align="center">
-            <a href="star_cancel.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">Áñ°ÜÃ£±âÃë¼Ò</a>
+            <a href="star_cancel.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">ì¦ê²¨ì°¾ê¸°ì·¨ì†Œ</a>
             </td>
         </tr>
         <% 
