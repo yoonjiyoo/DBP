@@ -137,12 +137,12 @@ public class EnrolledCourse {
             }
             majorResultSet.close();
 
-            // Calculate the current year and semester based on the current date
+
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
             int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1; // Month is zero-based
             int currentSemester = (currentMonth >= 5 && currentMonth <= 10) ? 2 : 1;
 
-            // Adjust the year and semester if the current date is in November or later
+
             if (currentMonth >= 11) {
                 currentYear += 1;
                 currentSemester = 1;
