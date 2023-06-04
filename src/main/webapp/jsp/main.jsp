@@ -1,23 +1,42 @@
 <%@ page contentType="text/html; charset=EUC-KR"%>
 <html>
+
 <head>
-<title>╣╔юлем╨ёюл╫╨╦╕ х╟©Кгя ╪Ж╟╜╫ец╩ ╫ц╫╨ешют╢о╢ы.</title>
+<title>К█╟Л²╢М└╟К╡═Л²╢Л┼╓К╔╪ М≥°Л ╘М∙° Л┬≤Й╟∙Л▀═Л╡╜ Л▀°Л┼╓М┘°Л·┘К▀┬К▀╓.</title>
+ <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 	<%@ include file="top.jsp"%>
-	<table width="75%" align="center" height="100%">
+	<table width="75%" align="center" height="100%" class="content">
+
 		<%
 		if (session_id != null) {
 		%>
 		<tr>
-			<td align="center"><%=session_id%>╢т ╧Ф╧╝ю╩ х╞©╣гу╢о╢ы.</td>
+			<td align="center"><%=session_id%>К▀≤ К╟╘К╛╦Л²└ М≥≤Л≤│М∙╘К▀┬К▀╓.</td>
 		</tr>
+		
+		<!-- К╟■К║° Л┬≤Й╟∙Л▀═Л╡╜ -->
+		<tr>
+    <td align="center">
+        <form action="direct_registration.jsp" method="post">
+            <label for="c_id">ЙЁ╪К╙╘Л╫■К⌠°:</label>
+            <input type="text" name="c_id" id="c_id" required>
+            <label for="c_id_no">К╤└К╟≤:</label>
+            <input type="text" name="c_id_no" id="c_id_no" required>
+            <input type="submit" value="К╧═К╔╦Л▀═Л╡╜">
+        </form>
+    </td>
+</tr>
+		
+		
 		<%
 		} else {
 		%>
 		<tr>
-			<td align="center">╥н╠вюнгя хд ╩Г©Кго╪╪©Д.</td>
+			<td align="center">К║°Й╥╦Л²╦М∙° М⌡└ Л┌╛Л ╘М∙≤Л└╦Л ■.</td>
 		</tr>
+	
 		<%
 		}
 		%>
