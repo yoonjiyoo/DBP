@@ -23,6 +23,7 @@
             <th>학과</th>
             <th>수강대기인원</th>
             <th>신청</th>
+            <th>삭제</th>
         </tr>
         <%
         Connection myConn = null;
@@ -94,6 +95,9 @@
                 <% } else { %>
                     <a href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">신청</a>
                 <% } %>
+            </td>
+            <td align="center">
+            <a href="star_cancel.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">즐겨찾기취소</a>
             </td>
         </tr>
         <% 
