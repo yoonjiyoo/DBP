@@ -2,13 +2,27 @@
 <%@ page import="java.sql.*"%>
 <html>
 <head>
-<title>╪Ж╟╜╫ец╩ ют╥б</title>
+<title>Л┬≤Й╟∙Л▀═Л╡╜ Л·┘К═╔</title>
 </head>
 <body>
 	<%
 	String s_id = (String) session.getAttribute("user");
 	String c_id = request.getParameter("c_id");
 	int c_id_no = Integer.parseInt(request.getParameter("c_id_no"));
+	String c_sem_str = request.getParameter("c_sem");
+	String c_year_str = request.getParameter("c_year");
+
+
+	int c_sem = 0;
+	int c_year = 0;
+	
+	if(c_sem_str != null) {
+	    c_sem = Integer.parseInt(c_sem_str);
+	}
+
+	if(c_year_str != null) {
+	    c_year = Integer.parseInt(c_year_str);
+	}
 	%>
 	<%
 	Connection myConn = null;
@@ -24,14 +38,16 @@
 		System.err.println("SQLException: " + ex.getMessage());
 	}
 
-	CallableStatement cstmt = myConn.prepareCall("{call InsertEnroll(?,?,?,?)}");
+	CallableStatement cstmt = myConn.prepareCall("{call InsertEnroll(?,?,?,?,?,?)}");
 	cstmt.setString(1, s_id);
 	cstmt.setString(2, c_id);
 	cstmt.setInt(3, c_id_no);
-	cstmt.registerOutParameter(4, java.sql.Types.VARCHAR);
+	cstmt.setInt(4, c_sem);
+	cstmt.setInt(5, c_year);
+	cstmt.registerOutParameter(6, java.sql.Types.VARCHAR);
 	try {
 		cstmt.execute();
-		result = cstmt.getString(4);
+		result = cstmt.getString(6);
 	%>
 	<script>
 alert("<%=result%>");
