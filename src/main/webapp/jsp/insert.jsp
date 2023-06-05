@@ -3,7 +3,7 @@
 <%@ page contentType="text/html; charset=EUC-KR"%>
 <%@ page import="java.util.Calendar"%>
 
-<%--과목코드와 분반을 분리해서 신청여부를 확인할 수 있도록 하기 위해 추가한 부분입니다--%>
+<%--과목코드와 분반을 분리해서 신청여부를 확인할 수 있도록 하기 위해 추가한 부분입니다!--%>
 <%!public class EnrolledCourse {
 		private String c_id;
 		private int c_id_no;
@@ -61,7 +61,7 @@
 	if (session_id == null)
 		response.sendRedirect("login.jsp");
 	%>
-	<table width="80%" align="center" border>
+	<table width="75%" align="center" border>
 		<br>
 		<tr>
 			<th>과목번호</th>
@@ -104,13 +104,13 @@
 		}
 		enrolledCoursesResultSet.close();
 
-		ArrayList<EnrolledCourse> starCourses = new ArrayList<EnrolledCourse>(); // 과목의 ID와 분반번호 모두를 저장할 수 있도록 타입을 EnrolledCourse로 변경
-		String selectStarCoursesSQL = "select c_id, c_id_no from star where s_id='" + session_id + "'"; // 분반번호를 불러옴
+		ArrayList<EnrolledCourse> starCourses = new ArrayList<EnrolledCourse>(); // 변경: 과목의 ID와 분반번호 모두를 저장할 수 있도록 타입을 EnrolledCourse로 변경
+		String selectStarCoursesSQL = "select c_id, c_id_no from star where s_id='" + session_id + "'"; // 변경: 분반번호를 불러옴
 		ResultSet starCoursesResultSet = stmt.executeQuery(selectStarCoursesSQL);
 		while (starCoursesResultSet.next()) {
 			String starCoursesId = starCoursesResultSet.getString("c_id");
-			int starCoursesNo = starCoursesResultSet.getInt("c_id_no"); // 분반번호를 가져옴
-			starCourses.add(new EnrolledCourse(starCoursesId, starCoursesNo)); // 과목의 ID와 분반번호를 모두 저장
+			int starCoursesNo = starCoursesResultSet.getInt("c_id_no"); // 변경: 분반번호를 가져옴
+			starCourses.add(new EnrolledCourse(starCoursesId, starCoursesNo)); // 변경: 과목의 ID와 분반번호를 모두 저장
 		}
 		starCoursesResultSet.close();
 
@@ -168,7 +168,7 @@
 				int c_sem = myResultSet.getInt("c_sem");
 
 				boolean isEnrolled = enrolledCourses.contains(new EnrolledCourse(c_id, c_id_no));
-				boolean isStarred = starCourses.contains(new EnrolledCourse(c_id, c_id_no)); // 과목의 ID와 분반번호를 모두 비교하여 즐겨찾기를 체크
+				boolean isStarred = starCourses.contains(new EnrolledCourse(c_id, c_id_no)); // 변경: 과목의 ID와 분반번호를 모두 비교하여 즐겨찾기를 체크
 				boolean isWaitlisted = waitCourses.contains(new EnrolledCourse(c_id, c_id_no));
 				boolean isFull = c_max == c_app;
 			%>
@@ -192,7 +192,7 @@
 					%> <a href="wait_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">대기하기</a>
 					<%
 					} else {
-					%> <a href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">신청</a>
+					%> <a href="insert_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>&c_sem=<%=c_sem%>&c_year=<%=c_year%>">신청</a>
 					<%
 					}
 					%>
@@ -200,12 +200,12 @@
 				<td align="center">
 					<%
 					if (isStarred) {
-					%> <!-- 과목의 ID와 분반번호를 모두 비교하여 즐겨찾기를 체크 -->
+					%> <!-- 변경: 과목의 ID와 분반번호를 모두 비교하여 즐겨찾기를 체크 -->
 					즐겨찾기 <%
  } else {
  %> <a
 					href="star_verify.jsp?c_id=<%=c_id%>&c_id_no=<%=c_id_no%>">즐겨찾기</a>
-					<!-- 분반번호를 함께 보냄 --> <%
+					<!-- 변경: 분반번호를 함께 보냄 --> <%
  }
  %>
 				</td>
