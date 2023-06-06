@@ -47,6 +47,7 @@
 <html>
 <head>
 <title>수강신청 입력</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 <script type="text/javascript">
 	function changeMajor() {
 		var selectedMajor = document.getElementById("majorSelect").value;
@@ -54,6 +55,7 @@
 				+ encodeURIComponent(selectedMajor);
 	}
 </script>
+
 </head>
 <body>
 	<%@ include file="top.jsp"%>
@@ -61,8 +63,10 @@
 	if (session_id == null)
 		response.sendRedirect("login.jsp");
 	%>
-	<table width="75%" align="center" border>
-		<br>
+	<div class="container col-9"  align="center">
+	<table class = "table table-striped">
+		<br>  
+		<thead align="center" class="table-dark">
 		<tr>
 			<th>과목번호</th>
 			<th>분반</th>
@@ -77,14 +81,16 @@
 			<th>연도</th>
 			<th>학기</th>
 		</tr>
+		</thead>
+		<tbody  class="table-group-divider">
 		<%
 		Connection myConn = null;
 		Statement stmt = null;
 		ResultSet myResultSet = null;
 		String mySQL = "";
 		String dburl = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "c##jiyoo";
-		String passwd = "pwd2023";
+		String user = "c##yujin";
+		String passwd = "DBP2023";
 		String dbdriver = "oracle.jdbc.driver.OracleDriver";
 		try {
 			Class.forName(dbdriver);
@@ -94,7 +100,7 @@
 			System.err.println("SQLException: " + ex.getMessage());
 		}
 
-		ArrayList<EnrolledCourse> enrolledCourses = new ArrayList<>();
+		ArrayList<EnrolledCourse> enrolledCourses = new ArrayList<EnrolledCourse>();
 		String selectEnrolledCoursesSQL = "select c_id, c_id_no from enroll where s_id='" + session_id + "'";
 		ResultSet enrolledCoursesResultSet = stmt.executeQuery(selectEnrolledCoursesSQL);
 		while (enrolledCoursesResultSet.next()) {
@@ -129,7 +135,10 @@
 		String majorSQL = "select distinct c_major from course";
 		ResultSet majorResultSet = stmt.executeQuery(majorSQL);
 		%>
-		<select id="majorSelect" onchange="changeMajor()">
+		<div class="container" >
+		<div class="row justify-content-center">
+		<div class="col-2 mb-3">
+		<select id="majorSelect" onchange="changeMajor()" class="form-select mx-auto">
 			<option value="">All</option>
 			<%
 			while (majorResultSet.next()) {
@@ -137,8 +146,14 @@
 			%>
 			<option value="<%=major%>"
 				<%=selectedMajor != null && selectedMajor.equals(major) ? "selected" : ""%>><%=major%></option>
+			
 			<%
-			}
+			}%>
+			</select>
+			</div>
+			</div>
+			</div>	
+			<%
 			majorResultSet.close();
 
 			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -172,7 +187,7 @@
 				boolean isWaitlisted = waitCourses.contains(new EnrolledCourse(c_id, c_id_no));
 				boolean isFull = c_max == c_app;
 			%>
-			<tr>
+			<tr >
 				<td align="center"><%=c_id%></td>
 				<td align="center"><%=c_id_no%></td>
 				<td align="center"><%=c_name%></td>
@@ -219,7 +234,8 @@
 			stmt.close();
 			myConn.close();
 			%>
-		
+		</tbody>
 	</table>
+	</div>
 </body>
 </html>
