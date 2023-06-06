@@ -1,33 +1,40 @@
 <%@ page contentType="text/html; charset=EUC-KR"%>
 <HTML>
 <head>
-<title>¼ö°­½ÅÃ» ½Ã½ºÅÛ ·Î±×ÀÎ</title>
+<title>ìˆ˜ê°•ì‹ ì²­ ì‹œìŠ¤í…œ ë¡œê·¸ì¸</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 </head>
 <BODY>
-	<table width="75%" align="center" bgcolor="#FFFF99" border>
+	<br>
+	<div class="container col-9">
+	<div class="mb-3">
+	<table class="table table-primary">
 		<tr>
-			<td><div align="center">¾ÆÀÌµð¿Í ÆÐ½º¿öµå¸¦ ÀÔ·ÂÇÏ¼¼¿ä
+			<td><div align="center" style="font-weight:bold;">ì•„ì´ë””ì™€ íŒ¨ìŠ¤ì›Œë“œë¥¼ ìž…ë ¥í•˜ì„¸ìš”
 	</table>
-	<table width="75%" align="center" border>
+	</div></div>
+	<div class="container col-9">
+	<table class="table table-bordered">
 		<FORM method="post" action="login_verify.jsp">
 			<tr>
-				<td><div align="center">¾ÆÀÌµð</div></td>
-				<td><div align="center">
-						<input type="text" name="userID">
+				<td><div align="center" style="font-weight:bold;">ì•„ì´ë””</div></td>
+				<td class="container row justify-content-center"><div class="col-5">
+						<input class="form-control" type="text" name="userID">
 					</div></td>
 			</tr>
 			<tr>
-				<td><div align="center">ÆÐ½º¿öµå</div></td>
-				<td><div align="center">
-						<input type="password" name="userPassword">
+				<td><div align="center" style="font-weight:bold;">íŒ¨ìŠ¤ì›Œë“œ</div></td>
+				<td class="container row justify-content-center"><div class="col-5">
+						<input class="form-control" type="password" name="userPassword">
 					</div></td>
 			</tr>
 			<tr>
 				<td colspan=2><div align="center">
-						<INPUT TYPE="SUBMIT" NAME="Submit" VALUE="·Î±×ÀÎ"> <INPUT TYPE="RESET" VALUE="Ãë¼Ò">
+						<INPUT class="btn btn-primary" TYPE="SUBMIT" NAME="Submit" VALUE="ë¡œê·¸ì¸"> <INPUT class="btn btn-secondary" TYPE="RESET" VALUE="ì·¨ì†Œ">
 					</div></td>
 			</tr>
 	</table>
+	</div>
 	</FORM>
 </BODY>
 </HTML>
