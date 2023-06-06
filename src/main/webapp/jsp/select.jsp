@@ -4,6 +4,8 @@
 <html>
 <head>
 <title>수강신청 입력</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
 </head>
 <body>
    <%@ include file="top.jsp"%>
@@ -17,8 +19,10 @@
    if (session_id == null)
       response.sendRedirect("login.jsp");
    %>
-   <table width="75%" align="center" border>
+   <div class="container col-9" align="center">
+   <table class = "table table-striped">
       <br>
+      <thead align="center" class="table-dark">
       <tr>
          <th>과목번호</th>
          <th>분반</th>
@@ -29,7 +33,7 @@
          <th>신청인원</th>
          
       </tr>
-      
+      </thead>
       <%
       Connection myConn = null;
       Statement stmt = null;
@@ -89,7 +93,7 @@
   		  int s_unit = cstmt.getInt(4);
   		  int s_count = cstmt.getInt(5);
   		%>
-
+		<tbody class="table-group-divider">
   		<tr>
       		<th colspan="5">총 신청학점</th>
       		<td align="center" colspan="2"><%=s_unit%></td>
@@ -97,7 +101,7 @@
       	<tr>
       		<th colspan="5">총 신청과목 수</th>
       		<td align="center" colspan="2"><%=s_count%></td>
-      	</tr>
+      	</tr></tbody>
   	  <%} catch (SQLException ex) {
   			System.err.println("SQLException: " + ex.getMessage());
   	  } finally {
@@ -111,17 +115,20 @@
   		} catch (SQLException ex) {
   		}
   	}%>
-   </table>
+   </table></div>
    <br><br>
-   <form action="" method="post" align="center">
-   	
-   	<input type="text" id="year" name="year" value=<%=c_year %> required>
-   	<label for="year">년도</label>
-   	
-   	<input type="text" id="semester" name="semester" value=<%=c_sem %> required>
-   	<label for="semester">학기</label>
-   	
-   	<input type="submit" value="조회">
+   <form class="container d-flex row justify-content-center mx-auto" action="" method="post" align="center">
+   	<div class="input-group ">
+   	<div class="d-flex mx-3">
+   	<input class="form-control" type="text" id="year" name="year" value=<%=c_year %> required>
+   	<label class="input-group-text" for="year">년도</label>
+   	</div>
+   	<div class="d-flex mx-3">
+   	<input class="form-control" type="text" id="semester" name="semester" value=<%=c_sem %> required>
+   	<label class="input-group-text" for="semester">학기</label>
+   	</div>
+   	<input  class="btn btn-primary" type="submit" value="조회">
+   	</div>
    </form>
 </body>
 </html>
