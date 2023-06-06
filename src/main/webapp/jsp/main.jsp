@@ -18,14 +18,22 @@
 		
 		<!-- 바로 수강신청 -->
 		<tr>
-    <td align="center">
-        <form action="direct_registration.jsp" method="post">
-            <label for="c_id">과목코드:</label>
-            <input type="text" name="c_id" id="c_id" required>
-            <label for="c_id_no">분반:</label>
-            <input type="text" name="c_id_no" id="c_id_no" required>
-            <input type="submit" value="빠른신청">
+    <td class="text-center" >
+        <form class="container d-flex row justify-content-center mx-auto" action="direct_registration.jsp" method="post">
+            <div class="input-group">
+            <div class="d-flex mx-3">
+            <label class="input-group-text" for="c_id">과목코드</label>
+            <input class="form-control" type="text" name="c_id" id="c_id" required>
+            </div>
+            <div class="d-flex mx-3">
+            <label class="input-group-text" for="c_id_no">분반</label>
+            <input class="form-control" type="text" name="c_id_no" id="c_id_no" required>
+            </div>
+            <input class="btn btn-primary" type="submit" value="빠른신청">
+            </div>
+
         </form>
+
     </td>
 </tr>
 		
