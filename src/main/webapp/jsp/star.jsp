@@ -4,6 +4,8 @@
 <html>
 <head>
 <title>수강신청 입력</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
 </head>
 <body>
     <%@ include file="top.jsp"%>
@@ -11,8 +13,10 @@
     if (session_id == null)
         response.sendRedirect("login.jsp");
     %>
-    <table width="80%" align="center" border>
+    <div class="container col-9"  align="center">
+    <table class = "table table-striped">
         <br>
+        <thead align="center" class="table-dark">
         <tr>
             <th>과목번호</th>
             <th>분반</th>
@@ -25,14 +29,15 @@
             <th>신청</th>
             <th>삭제</th>
         </tr>
+        </thead>
         <%
         Connection myConn = null;
         Statement stmt = null;
         ResultSet myResultSet = null;
         String mySQL = "";
         String dburl = "jdbc:oracle:thin:@localhost:1521:xe";
-        String user = "c##jiyoo";
-        String passwd = "pwd2023";
+        String user = "c##yujin";
+        String passwd = "DBP2023";
         String dbdriver = "oracle.jdbc.driver.OracleDriver";
         try {
             Class.forName(dbdriver);
@@ -107,6 +112,6 @@
         stmt.close();
         myConn.close();
         %>
-    </table>
+    </table></div>
 </body>
 </html>
